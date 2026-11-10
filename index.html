@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Policybazaar Employee Diwali Gift Rating</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #052963 0%, #001030 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      background: #ffffff;
+      color: #333333;
+      max-width: 540px;
+      width: 100%;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      position: relative;
+    }
+
+    .brand-header {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ea5b0c;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    /* Heading Layout with PB Logo */
+    .heading-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .pb-logo-badge {
+      width: 36px;
+      height: 36px;
+      background-color: #052963;
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+      flex-shrink: 0;
+      box-shadow: 0 3px 8px rgba(5, 41, 99, 0.3);
+    }
+
+    h1 {
+      font-size: 20px;
+      color: #052963;
+      line-height: 1.3;
+      text-align: left;
+    }
+
+    /* Stage Container */
+    .stage {
+      position: relative;
+      width: 100%;
+      height: 330px;
+      background-color: #f4f7fa;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .character-svg {
+      width: 290px;
+      height: 320px;
+      transition: transform 0.2s ease;
+    }
+
+    /* Dynamic Expression States */
+    .eye-laugh, .mouth-laugh, .haha-text {
+      display: none;
+    }
+
+    .eye-cry, .mouth-cry, .teardrop {
+      display: none;
+    }
+
+    /* Stage State Classes */
+    .stage.laughing .eye-normal,
+    .stage.laughing .mouth-normal {
+      display: none;
+    }
+
+    .stage.laughing .eye-laugh,
+    .stage.laughing .mouth-laugh {
+      display: block;
+    }
+
+    .stage.laughing .haha-text {
+      display: block;
+      animation: floatHaha 0.8s ease-out infinite alternate;
+    }
+
+    .stage.laughing .character-svg {
+      animation: laughBounce 0.4s ease-in-out infinite alternate;
+    }
+
+    .stage.crying .eye-normal,
+    .stage.crying .mouth-normal {
+      display: none;
+    }
+
+    .stage.crying .eye-cry,
+    .stage.crying .mouth-cry,
+    .stage.crying .teardrop {
+      display: block;
+    }
+
+    .stage.crying .teardrop-left {
+      animation: tearFall 0.8s ease-in infinite;
+    }
+
+    .stage.crying .teardrop-right {
+      animation: tearFall 0.8s ease-in 0.3s infinite;
+    }
+
+    .stage.crying .character-svg {
+      animation: cryTremble 0.25s ease-in-out infinite alternate;
+    }
+
+    /* Keyframe Animations */
+    @keyframes laughBounce {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-10px) scale(1.02); }
+    }
+
+    @keyframes floatHaha {
+      0% { transform: translateY(0) scale(1); opacity: 0.8; }
+      100% { transform: translateY(-15px) scale(1.2); opacity: 1; }
+    }
+
+    @keyframes cryTremble {
+      0% { transform: translateX(-3px) rotate(-1deg); }
+      100% { transform: translateX(3px) rotate(1deg); }
+    }
+
+    @keyframes tearFall {
+      0% { transform: translateY(0) scale(0.6); opacity: 1; }
+      80% { transform: translateY(50px) scale(1.2); opacity: 0.9; }
+      100% { transform: translateY(65px) scale(0.2); opacity: 0; }
+    }
+
+    /* Heart Container for Shower */
+    .heart-shower {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 6;
+      overflow: hidden;
+    }
+
+    .heart-icon {
+      position: absolute;
+      top: -40px;
+      animation: heartFall linear forwards;
+    }
+
+    @keyframes heartFall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(360px) rotate(360deg); opacity: 0; }
+    }
+
+    /* Name Input Section */
+    .input-section {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .input-section label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #052963;
+      margin-bottom: 6px;
+    }
+
+    .name-input {
+      width: 100%;
+      padding: 12px 15px;
+      font-size: 15px;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .name-input:focus {
+      border-color: #052963;
+    }
+
+    .already-voted-badge {
+      display: none;
+      background-color: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    /* Buttons */
+    .btn-group {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 25px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .btn-like {
+      background-color: #2e7d32;
+      color: #ffffff;
+    }
+
+    .btn-like:hover {
+      background-color: #1b5e20;
+    }
+
+    .btn-dislike {
+      background-color: #d32f2f;
+      color: #ffffff;
+    }
+
+    .btn-dislike:hover {
+      background-color: #c62828;
+    }
+
+    .btn:disabled, .name-input:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background-color: #e2e8f0;
+    }
+
+    /* Scoreboard */
+    .scoreboard {
+      display: flex;
+      justify-content: space-around;
+      background: #eef2f6;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #dcdfe4;
+      margin-bottom: 20px;
+    }
+
+    .score-box {
+      text-align: center;
+    }
+
+    .score-label {
+      font-size: 13px;
+      color: #666666;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .score-count {
+      font-size: 24px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .score-like {
+      color: #2e7d32;
+    }
+
+    .score-dislike {
+      color: #d32f2f;
+    }
+
+    /* Likers and Dislikers Lists */
+    .voters-lists {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      text-align: left;
+    }
+
+    .voter-card {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px;
+      max-height: 140px;
+      overflow-y: auto;
+    }
+
+    .voter-card-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .title-like { color: #2e7d32; }
+    .title-dislike { color: #d32f2f; }
+
+    .voter-ul {
+      list-style: none;
+      font-size: 13px;
+      color: #475569;
+    }
+
+    .voter-ul li {
+      padding: 3px 0;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .voter-ul li:last-child {
+      border-bottom: none;
+    }
+
+    .sync-status {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 10px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="brand-header">Policybazaar</div>
+    
+    <!-- Heading with Policybazaar PB Circular Logo -->
+    <div class="heading-wrapper">
+      <div class="pb-logo-badge">pb</div>
+      <h1>Policybazaar Employee Diwali Gift Rating</h1>
+    </div>
+
+    <div class="stage" id="stage">
+      <!-- Heart Shower Layer -->
+      <div class="heart-shower" id="heartShower"></div>
+
+      <!-- Pure SVG Character of Sarbvir Singh -->
+      <svg class="character-svg" viewBox="0 0 290 320">
+        
+        <!-- Laugh Text Overlay -->
+        <g class="haha-text" transform="translate(205, 50)">
+          <text font-family="'Segoe UI', sans-serif" font-size="22" font-weight="bold" fill="#ea5b0c">HA! HA!</text>
+        </g>
+        <g class="haha-text" transform="translate(20, 65)">
+          <text font-family="'Segoe UI', sans-serif" font-size="20" font-weight="bold" fill="#2e7d32">HEHE!</text>
+        </g>
+
+        <!-- Torso & Shirt -->
+        <path d="M 55 320 L 75 220 Q 145 200 215 220 L 235 320 Z" fill="#8bb4e7"/>
+        <!-- Shirt Collar & V-Neck -->
+        <rect x="130" y="195" width="30" height="30" fill="#e8a87c" rx="4"/>
+        <path d="M 130 220 L 145 250 L 160 220 Z" fill="#ffffff"/>
+        <path d="M 145 250 L 145 320" stroke="#6893cb" stroke-width="2"/>
+
+        <!-- Face Base -->
+        <ellipse cx="145" cy="140" rx="46" ry="50" fill="#e8a87c"/>
+
+        <!-- Sky Blue Turban -->
+        <g id="turban">
+          <path d="M 92 135 C 85 80, 105 35, 145 35 C 185 35, 205 80, 198 135 C 188 90, 168 55, 145 55 C 122 55, 102 90, 92 135 Z" fill="#46c0ee"/>
+          <path d="M 98 115 Q 145 50 192 115 Q 145 78 98 115 Z" fill="#32b5e8"/>
+          <path d="M 95 125 Q 145 88 195 125 Q 145 98 95 125 Z" fill="#66d1f8"/>
+          <path d="M 130 50 Q 145 28 160 50 Q 145 38 130 50 Z" fill="#1fa3da"/>
+          <!-- Inner Black Patka Band -->
+          <path d="M 110 102 L 145 86 L 180 102 L 175 108 L 145 94 L 115 108 Z" fill="#111111"/>
+        </g>
+
+        <!-- Grey Beard & Mustache -->
+        <g id="beard">
+          <!-- Main Beard Frame -->
+          <path d="M 98 138 C 98 192, 115 208, 145 208 C 175 208, 192 192, 192 138 C 182 160, 162 170, 145 170 C 128 170, 108 160, 98 138 Z" fill="#dcdcdc" stroke="#bbbbbb" stroke-width="1.5"/>
+          <!-- Curved White Handlebar Mustache -->
+          <path d="M 104 150 Q 128 143 145 150 Q 162 143 186 150 Q 194 138 178 138 Q 158 140 145 145 Q 132 140 112 138 Q 96 138 104 150 Z" fill="#ffffff" stroke="#cccccc" stroke-width="1.5"/>
+        </g>
+
+        <!-- EYES -->
+        <!-- Normal Eyes -->
+        <g class="eye-normal">
+          <circle cx="123" cy="122" r="5" fill="#333333"/>
+          <circle cx="167" cy="122" r="5" fill="#333333"/>
+          <path d="M 112 114 Q 123 110 134 114" stroke="#444444" stroke-width="2.5" fill="none"/>
+          <path d="M 156 114 Q 167 110 178 114" stroke="#444444" stroke-width="2.5" fill="none"/>
+        </g>
+
+        <!-- Laughing Eyes -->
+        <g class="eye-laugh">
+          <path d="M 114 125 Q 123 114 132 125" stroke="#222222" stroke-width="3" fill="none"/>
+          <path d="M 158 125 Q 167 114 176 125" stroke="#222222" stroke-width="3" fill="none"/>
+          <path d="M 112 110 Q 123 103 134 110" stroke="#444444" stroke-width="3" fill="none"/>
+          <path d="M 156 110 Q 167 103 178 110" stroke="#444444" stroke-width="3" fill="none"/>
+        </g>
+
+        <!-- Crying Eyes -->
+        <g class="eye-cry">
+          <path d="M 114 120 Q 123 129 132 120" stroke="#222222" stroke-width="3" fill="none"/>
+          <path d="M 158 120 Q 167 129 176 120" stroke="#222222" stroke-width="3" fill="none"/>
+          <path d="M 112 108 Q 123 115 134 110" stroke="#444444" stroke-width="3" fill="none"/>
+          <path d="M 156 110 Q 167 115 178 108" stroke="#444444" stroke-width="3" fill="none"/>
+        </g>
+
+        <!-- Teardrop Overlay -->
+        <g class="teardrop">
+          <path class="teardrop-left" d="M 117 127 Q 112 136 117 142 A 3.5 3.5 0 1 0 122 136 Z" fill="#29b6f6"/>
+          <path class="teardrop-right" d="M 173 127 Q 168 136 173 142 A 3.5 3.5 0 1 0 178 136 Z" fill="#29b6f6"/>
+        </g>
+
+        <!-- MOUTH -->
+        <!-- Normal Mouth -->
+        <path class="mouth-normal" d="M 132 154 Q 145 162 158 154" stroke="#aa3333" stroke-width="2.5" fill="none"/>
+
+        <!-- Laughing Open Mouth -->
+        <path class="mouth-laugh" d="M 128 152 Q 145 174 162 152 Z" fill="#880e4f" stroke="#560027" stroke-width="1.5"/>
+
+        <!-- Crying Mouth -->
+        <path class="mouth-cry" d="M 130 162 Q 137 155 145 160 Q 153 155 160 162" stroke="#880e4f" stroke-width="2.5" fill="none"/>
+
+        <!-- Hands Holding Gift Box -->
+        <ellipse cx="68" cy="245" rx="14" ry="11" fill="#e8a87c"/>
+        <ellipse cx="222" cy="245" rx="14" ry="11" fill="#e8a87c"/>
+
+        <!-- Policybazaar Diwali Gift Box -->
+        <g transform="translate(65, 200)">
+          <rect x="0" y="0" width="160" height="98" fill="#f49d25" stroke="#d47900" stroke-width="2" rx="5"/>
+          <rect x="6" y="6" width="148" height="86" fill="none" stroke="#ca3419" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <rect x="10" y="10" width="140" height="78" fill="#fbb03b"/>
+
+          <rect x="24" y="16" width="112" height="18" fill="#052963" rx="3"/>
+          <text x="80" y="29" font-family="'Segoe UI', sans-serif" font-size="9.5" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="1">HAPPY DIWALI</text>
+
+          <g transform="translate(80, 57)">
+            <circle cx="0" cy="0" r="22" fill="#ea5b0c"/>
+            <path d="M0,-22 L0,22 M-22,0 L22,0 M-16,-16 L16,16 M-16,16 L16,-16" stroke="#fbb03b" stroke-width="2"/>
+            <circle cx="0" cy="0" r="16" fill="#052963" stroke="#ffffff" stroke-width="1.5"/>
+            <text x="0" y="4" font-family="'Segoe UI', sans-serif" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">pb</text>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Already Voted Notice -->
+    <div class="already-voted-badge" id="alreadyVotedBadge">
+      🔒 You have already cast your vote! Only 1 vote is allowed per visitor.
+    </div>
+
+    <!-- User Name Input Box -->
+    <div class="input-section">
+      <label for="userNameInput">Enter Your Name / Employee ID to Vote:</label>
+      <input type="text" id="userNameInput" class="name-input" placeholder="e.g. Rahul Sharma" />
+    </div>
+
+    <!-- Rating Buttons -->
+    <div class="btn-group">
+      <button class="btn btn-like" id="likeBtn" onclick="handleVote('like')">
+        <svg viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>
+        Like
+      </button>
+      <button class="btn btn-dislike" id="dislikeBtn" onclick="handleVote('dislike')">
+        <svg viewBox="0 0 24 24"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L8.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>
+        Dislike
+      </button>
+    </div>
+
+    <!-- Live Counter Display -->
+    <div class="scoreboard">
+      <div class="score-box">
+        <div class="score-label">Likes</div>
+        <div class="score-count score-like" id="likeCount">0</div>
+      </div>
+      <div class="score-box">
+        <div class="score-label">Dislikes</div>
+        <div class="score-count score-dislike" id="dislikeCount">0</div>
+      </div>
+    </div>
+
+    <!-- Employee Votes Lists -->
+    <div class="voters-lists">
+      <div class="voter-card">
+        <div class="voter-card-title title-like">👍 Liked By:</div>
+        <ul class="voter-ul" id="likersList">
+          <li><em>Loading...</em></li>
+        </ul>
+      </div>
+      <div class="voter-card">
+        <div class="voter-card-title title-dislike">👎 Disliked By:</div>
+        <ul class="voter-ul" id="dislikersList">
+          <li><em>Loading...</em></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sync-status" id="syncStatus">Syncing with server...</div>
+  </div>
+
+  <script>
+    // Paste your Google Apps Script Web App URL below to sync live with Google Sheets
+    const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxniz9ezxWQnX_HVrNOKOD-SNf3FQJrfmT-9cM49fz62qEG3X2wIhNr4_e_lkqxVpl5/exec"; 
+
+    let voteData = JSON.parse(localStorage.getItem('pb_diwali_votes')) || {
+      likes: [],
+      dislikes: []
+    };
+
+    const likeCountEl = document.getElementById('likeCount');
+    const dislikeCountEl = document.getElementById('dislikeCount');
+    const likersListEl = document.getElementById('likersList');
+    const dislikersListEl = document.getElementById('dislikersList');
+    const stage = document.getElementById('stage');
+    const heartShower = document.getElementById('heartShower');
+    const likeBtn = document.getElementById('likeBtn');
+    const dislikeBtn = document.getElementById('dislikeBtn');
+    const userNameInput = document.getElementById('userNameInput');
+    const alreadyVotedBadge = document.getElementById('alreadyVotedBadge');
+    const syncStatus = document.getElementById('syncStatus');
+
+    // Check voting restriction status
+    checkVisitorVotingStatus();
+    updateUI();
+    fetchRemoteData();
+
+    function checkVisitorVotingStatus() {
+      const hasVotedLocal = localStorage.getItem('pb_diwali_user_voted');
+      const hasVotedCookie = getCookie('pb_diwali_user_voted');
+
+      if (hasVotedLocal || hasVotedCookie) {
+        const savedName = localStorage.getItem('pb_diwali_user_name') || 'You';
+        userNameInput.value = savedName;
+        userNameInput.disabled = true;
+        likeBtn.disabled = true;
+        dislikeBtn.disabled = true;
+        alreadyVotedBadge.style.display = 'block';
+      }
+    }
+
+    function setCookie(name, value, days) {
+      let expires = "";
+      if (days) {
+        let date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+      }
+      document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Lax";
+    }
+
+    function getCookie(name) {
+      let nameEQ = name + "=";
+      let ca = document.cookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+    function updateUI() {
+      likeCountEl.textContent = voteData.likes.length;
+      dislikeCountEl.textContent = voteData.dislikes.length;
+
+      // Render Likers List
+      if (voteData.likes.length === 0) {
+        likersListEl.innerHTML = '<li><em>No likes yet</em></li>';
+      } else {
+        likersListEl.innerHTML = voteData.likes.map(name => `<li>${escapeHtml(name)}</li>`).join('');
+      }
+
+      // Render Dislikers List
+      if (voteData.dislikes.length === 0) {
+        dislikersListEl.innerHTML = '<li><em>No dislikes yet</em></li>';
+      } else {
+        dislikersListEl.innerHTML = voteData.dislikes.map(name => `<li>${escapeHtml(name)}</li>`).join('');
+      }
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function resetStage() {
+      stage.classList.remove('laughing', 'crying');
+    }
+
+    function triggerHeartShower() {
+      heartShower.innerHTML = '';
+      const colors = ['#e91e63', '#ff4081', '#ff1744', '#ea5b0c', '#e040fb'];
+      const totalHearts = 25;
+
+      for (let i = 0; i < totalHearts; i++) {
+        const heartWrapper = document.createElement('div');
+        heartWrapper.className = 'heart-icon';
+        
+        const size = Math.floor(Math.random() * 20) + 14; 
+        const leftPos = Math.random() * 100; 
+        const duration = Math.random() * 1 + 1.2; 
+        const delay = Math.random() * 0.4;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+
+        heartWrapper.style.left = `${leftPos}%`;
+        heartWrapper.style.animationDuration = `${duration}s`;
+        heartWrapper.style.animationDelay = `${delay}s`;
+
+        heartWrapper.innerHTML = `
+          <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${color}">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        `;
+
+        heartShower.appendChild(heartWrapper);
+      }
+
+      setTimeout(() => {
+        heartShower.innerHTML = '';
+      }, 2000);
+    }
+
+    function handleVote(type) {
+      // Prevent voting if already voted
+      if (localStorage.getItem('pb_diwali_user_voted') || getCookie('pb_diwali_user_voted')) {
+        alert('You have already submitted your vote!');
+        return;
+      }
+
+      const userName = userNameInput.value.trim();
+
+      if (!userName) {
+        alert('Please enter your Name or Employee ID before voting!');
+        userNameInput.focus();
+        return;
+      }
+
+      // Check if this exact name has already voted across the sheet lists
+      if (voteData.likes.includes(userName) || voteData.dislikes.includes(userName)) {
+        alert('This name/ID has already cast a vote!');
+        return;
+      }
+
+      resetStage();
+
+      if (type === 'like') {
+        voteData.likes.push(userName);
+        stage.classList.add('laughing');
+        triggerHeartShower();
+        setTimeout(resetStage, 2200);
+
+      } else if (type === 'dislike') {
+        voteData.dislikes.push(userName);
+        stage.classList.add('crying');
+        setTimeout(resetStage, 2200);
+      }
+
+      // Lock visitor status
+      localStorage.setItem('pb_diwali_user_voted', 'true');
+      localStorage.setItem('pb_diwali_user_name', userName);
+      setCookie('pb_diwali_user_voted', 'true', 365);
+
+      saveData();
+      checkVisitorVotingStatus();
+    }
+
+    function saveData() {
+      localStorage.setItem('pb_diwali_votes', JSON.stringify(voteData));
+      updateUI();
+      syncWithGoogleSheet();
+    }
+
+    async function fetchRemoteData() {
+      if (!GOOGLE_SHEET_WEBAPP_URL) {
+        syncStatus.textContent = 'Synced locally (Google Sheet URL not configured)';
+        return;
+      }
+
+      try {
+        syncStatus.textContent = 'Fetching live data...';
+        const response = await fetch(GOOGLE_SHEET_WEBAPP_URL);
+        const data = await response.json();
+
+        if (data && data.likes && data.dislikes) {
+          voteData = data;
+          localStorage.setItem('pb_diwali_votes', JSON.stringify(voteData));
+          updateUI();
+          syncStatus.textContent = 'Live data synced with Google Sheet';
+        }
+      } catch (err) {
+        syncStatus.textContent = 'Loaded from local storage';
+      }
+    }
+
+    async function syncWithGoogleSheet() {
+      if (!GOOGLE_SHEET_WEBAPP_URL) return;
+
+      try {
+        syncStatus.textContent = 'Saving to Google Sheet...';
+        await fetch(GOOGLE_SHEET_WEBAPP_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(voteData)
+        });
+        syncStatus.textContent = 'Vote saved to Google Sheet!';
+      } catch (err) {
+        syncStatus.textContent = 'Saved locally (Sync pending)';
+      }
+    }
+  </script>
+</body>
+</html>
