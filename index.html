@@ -737,7 +737,7 @@
           voteData = data;
           localStorage.setItem('pb_diwali_votes', JSON.stringify(voteData));
           updateUI();
-          syncStatus.textContent = 'Live data synced with Google Sheet';
+          syncStatus.textContent = 'Live data synced with Server';
         }
       } catch (err) {
         syncStatus.textContent = 'Loaded from local storage';
@@ -748,14 +748,14 @@
       if (!GOOGLE_SHEET_WEBAPP_URL) return;
 
       try {
-        syncStatus.textContent = 'Saving to Google Sheet...';
+        syncStatus.textContent = 'Saving to Server...';
         await fetch(GOOGLE_SHEET_WEBAPP_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(voteData)
         });
-        syncStatus.textContent = 'Vote saved to Google Sheet!';
+        syncStatus.textContent = 'Vote saved to Server';
       } catch (err) {
         syncStatus.textContent = 'Saved locally (Sync pending)';
       }
